@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>찰떡이 홈페이지</title>
   <meta name="description" content="곧 태어날 우리 아기 찰떡이를 위한 작은 홈페이지" />
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gowun+Batang&display=swap" rel="stylesheet">
+  <!-- 기존 폰트 + 둥근 느낌의 Jua 추가 -->
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gowun+Batang&family=Jua&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #e0f7ff;
@@ -14,62 +15,101 @@
       --muted: #666;
       --accent1: #b3e5ff;
       --accent2: #80d4ff;
+      --c-sun: #ffd87a;
+      --c-pink: #ffd1e6;
+      --c-mint: #d3fff3;
+      --c-lav: #e7ddff;
+      --hero-grad-a: #66d1ff;
+      --hero-grad-b: #ff9ed1;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0; font-family: 'Gowun Batang', serif;
       color: var(--text); background: linear-gradient(180deg, var(--bg), #ffffff);
-      animation: fadeIn 1s ease-in-out;
+      animation: fadeIn 0.9s ease-in-out;
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .container { max-width: 920px; margin: 0 auto; padding: 24px; position: relative; }
 
+    /* --------------------- Hero (Title) --------------------- */
     .hero {
-      background: radial-gradient(1200px 400px at 10% -10%, var(--accent1) 0%, transparent 60%),
-                  radial-gradient(1200px 400px at 110% -10%, var(--accent2) 0%, transparent 60%);
-      border-radius: 28px; padding: 40px 28px; position: relative; overflow: hidden;
+      position: relative;
+      border-radius: 28px; padding: 56px 24px 44px; overflow: hidden; text-align: center;
+      background:
+        radial-gradient(1200px 420px at 10% -10%, var(--accent1) 0%, transparent 60%),
+        radial-gradient(1200px 420px at 110% -10%, var(--accent2) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.85), #fff 65%);
       box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-      text-align: center; animation: slideDown 1s ease-out;
+      animation: slideDown 0.8s ease-out;
+      isolation: isolate; /* for pseudo elements layering */
     }
-    @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .hero h1 {
-      margin: 0 0 12px; font-size: 42px; color: #0077b6;
-      font-family: 'Gowun Dodum', sans-serif;
-      letter-spacing: -0.5px;
-    }
-    .chip {
-      display: inline-block; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1px solid #eee;
-      color: #555; font-size: 14px; animation: fadeIn 1.5s ease-in-out;
-      font-family: 'Gowun Dodum', sans-serif;
-    }
+    @keyframes slideDown { from { transform: translateY(-12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* D-Day 배지 */
-    .dbadge {
+    /* softly drifting decorative bubbles */
+    .hero::before,
+    .hero::after {
+      content: ""; position: absolute; inset: -40px -20px auto auto; height: 180px; width: 180px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff 0 30%, rgba(255,255,255,0) 60%), var(--c-mint);
+      filter: blur(0.2px); opacity: .55; animation: drift 10s ease-in-out infinite;
+      z-index: 0;
+    }
+    .hero::after { inset: auto auto -50px -30px; height: 220px; width: 220px; background: radial-gradient(circle at 30% 30%, #fff 0 28%, rgba(255,255,255,0) 60%), var(--c-pink); animation-duration: 13s; }
+    @keyframes drift { 0%,100% { transform: translateY(0) } 50% { transform: translateY(10px) } }
+
+    .chip {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 14px; border-radius: 999px;
-      background: #fff; border: 1px solid #e6f4ff; color: #0077b6; font-weight: 700;
-      box-shadow: 0 8px 24px rgba(0,119,182,0.12);
-      margin-top: 8px;
-      font-family: 'Gowun Dodum', sans-serif;
+      padding: 8px 16px; border-radius: 999px; background: #fff; border: 1px solid #eee;
+      color: #4b5563; font-size: 14px; font-family: 'Gowun Dodum', sans-serif; font-weight: 600;
+      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+      animation: pop .6s ease-out both .1s;
+    }
+    .chip .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--c-sun); display: inline-block; box-shadow: 0 0 0 0 rgba(255,216,122,.7); animation: pulse 1.6s ease-out infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,216,122,.6)} 70% { box-shadow: 0 0 0 10px rgba(255,216,122,0)} 100% { box-shadow: 0 0 0 0 rgba(255,216,122,0)} }
+    @keyframes pop { from { transform: translateY(6px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
+    .hero h1 {
+      margin: 14px 0 8px; font-size: clamp(36px, 5.2vw, 56px);
+      font-family: 'Jua', system-ui, -apple-system, 'Gowun Dodum', sans-serif;
+      letter-spacing: -.5px; line-height: 1.05; position: relative; z-index: 1;
+    }
+    .hero .grad {
+      background: linear-gradient(90deg, var(--hero-grad-a), var(--hero-grad-b));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmer 3.5s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100% { filter: drop-shadow(0 0 0 rgba(0,0,0,0.0)) } 50% { filter: drop-shadow(0 4px 12px rgba(255,158,209,.35)) } }
+
+    /* cute wave underline */
+    .hero-title-wrap { display: inline-block; position: relative; }
+    .hero-title-wrap::after {
+      content: ""; position: absolute; left: 8px; right: 8px; bottom: -10px; height: 10px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="240" height="10" viewBox="0 0 240 10"><path d="M0 6 Q20 0 40 6 T80 6 T120 6 T160 6 T200 6 T240 6" fill="none" stroke="%23b3e5ff" stroke-width="3" stroke-linecap="round"/></svg>') center/contain no-repeat;
+      opacity: .9; animation: floatY 2.8s ease-in-out infinite;
+    }
+    @keyframes floatY { 0%,100% { transform: translateY(0) } 50% { transform: translateY(3px) } }
+
+    .dbadge {
+      display: inline-flex; align-items: center; gap: 8px; position: relative; z-index: 1;
+      padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid #e6f4ff; color: #0077b6; font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,119,182,0.12); margin-top: 8px; font-family: 'Gowun Dodum', sans-serif;
     }
     .dbadge .pill { background: #e6f7ff; padding: 4px 10px; border-radius: 999px; font-size: 14px; font-weight: 800; }
 
-    /* 오른쪽 상단 작은 동영상 */
-    /*.side-video {
-      position: absolute;
-      top: 30px;
-      right: 20px;
-      width: 120px;           /* 요청: 작게 */
-      height: 120px;           /* 1:1 비율 */
-      border-radius: 10px;
-      border: 1px solid #e6e6e6;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-      background: #000;
-      z-index: 1;
-    }
-    .side-video video { width: 100%; height: 100%; object-fit: cover; display: block; }*/
+    /* floating baby stickers (emoji) */
+    .stickers { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .sticker { position: absolute; font-size: 28px; opacity: .9; filter: drop-shadow(0 4px 10px rgba(0,0,0,.1)); animation: bob 6s ease-in-out infinite; }
+    .sticker.s1 { top: 22%; left: 6%; animation-duration: 7s }
+    .sticker.s2 { top: 14%; right: 10%; animation-duration: 6.5s }
+    .sticker.s3 { bottom: 14%; left: 10%; animation-duration: 7.5s }
+    .sticker.s4 { bottom: 10%; right: 8%; animation-duration: 8s }
+    @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
 
+    /* motion reduced */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important }
+    }
+
+    /* --------------------- Layout & Cards (기존 유지) --------------------- */
     .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (min-width: 760px) { .row { grid-template-columns: 1fr 1fr; } }
     .card {
@@ -77,13 +117,13 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.04);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-      .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
     .card h2 { margin: 0 0 12px; font-size: 22px; font-family: 'Gowun Dodum', sans-serif; }
     .muted { color: var(--muted); font-size: 14px; }
     .gallery { display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; padding: 8px 4px 12px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .gallery img { width: 160px; height: 160px; flex: 0 0 auto; object-fit: cover; border-radius: 12px; border: 1px solid #eee; cursor: zoom-in; transition: transform 0.25s ease, box-shadow 0.25s ease; scroll-snap-align: start; }
     .gallery img:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-    .footer { text-align: center; color: #888; font-size: 13px; padding: 24px 0; font-family: 'Gowun Dodum', sans-serif; animation: fadeIn 2s ease-in-out; }
+    .footer { text-align: center; color: #888; font-size: 13px; padding: 24px 0; font-family: 'Gowun Dodum', sans-serif; animation: fadeIn 1.4s ease-in-out; }
     .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 1000; }
     .lightbox[aria-hidden="false"] { display: flex; animation: fadeIn 0.3s ease-in-out; }
     .lightbox img { max-width: min(92vw, 1200px); max-height: 90vh; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: fadeIn 0.5s ease-in-out; }
@@ -93,64 +133,69 @@
 </head>
 <body>
   <div class="container">
-    <!-- 오른쪽 상단 비디오: 같은 폴더에 small-video.mp4 넣기 -->
-    <!--<div class="side-video">
-      <video src="small-video.mp4" autoplay muted loop playsinline></video>
-    </div> -->
+    <section class="hero" aria-label="찰떡이 홈페이지 타이틀">
+      <div class="stickers" aria-hidden="true">
+        <div class="sticker s1">🍼</div>
+        <div class="sticker s2">🧸</div>
+        <div class="sticker s3">⭐</div>
+        <div class="sticker s4">🌙</div>
+      </div>
 
-    <section class="hero">
-      <span class="chip">곧 만나요 👶</span>
-      <h1>우리 아기 <span style="color:#0077b6">찰떡이</span> 홈페이지</h1>
-      <!-- D-Day 전용 배지 -->
+      <span class="chip"><span class="dot"></span> 곧 만나요 👶</span>
+
+      <h1 class="hero-title">
+        <span class="hero-title-wrap">
+          우리 아기 <span class="grad">찰떡이</span> 홈페이지
+        </span>
+      </h1>
+
+      <!-- D-Day 전용 배지 + 카운트다운 -->
       <div id="dday-badge" class="dbadge" aria-live="polite">📅 <span class="pill">D-?</span></div>
-
-      <!-- 요청에 따라: 출산 예정일은 아래 '아기 정보' 섹션에서만 표시 -->
-      <h2 id="countdown" aria-live="polite" style="margin: 6px 0 0; font-weight:600"></h2>
+      <h2 id="countdown" aria-live="polite" style="margin: 10px 0 0; font-weight:600; font-size:16px"></h2>
     </section>
 
     <div style="height: 18px"></div>
 
     <section style="display: flex; gap: 20px; flex-wrap: wrap;">
-  <!-- 왼쪽: 아기 정보 -->
-  <div class="card" style="flex: 1; min-width: 260px; display: flex; align-items: flex-start; gap: 14px;">
-    <div style="flex: 1;">
-      <h2>👶 아기 정보</h2>
-      <p>이름(태명): <strong id="baby-name">찰떡이</strong></p>
-      <p>아빠/엄마: <strong>승덕</strong> • <strong>승혜</strong></p>
-      <p>탄생 예정일: <strong id="due-date-text">2025-08-26</strong></p>
-    </div>
-    <div style="width: 120px; height: 120px; border-radius: 10px; overflow: hidden; flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.15); border: 1px solid #e6e6e6; background:#000;">
-      <video src="small-video2.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-    </div>
-  </div>
+      <!-- 왼쪽: 아기 정보 -->
+      <div class="card" style="flex: 1; min-width: 260px; display: flex; align-items: flex-start; gap: 14px;">
+        <div style="flex: 1;">
+          <h2>👶 아기 정보</h2>
+          <p>이름(태명): <strong id="baby-name">찰떡이</strong></p>
+          <p>아빠/엄마: <strong>승덕</strong> • <strong>승혜</strong></p>
+          <p>탄생 예정일: <strong id="due-date-text">2025-08-26</strong></p>
+        </div>
+        <div style="width: 120px; height: 120px; border-radius: 10px; overflow: hidden; flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.15); border: 1px solid #e6e6e6; background:#000;">
+          <video src="small-video2.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+        </div>
+      </div>
 
-  <!-- 오른쪽: 엄마아빠 편지 + (좌측) 작은 영상 -->
-  <div class="card" style="flex: 1; min-width: 260px; display: flex; align-items: flex-start; gap: 14px;">
-    <!-- 작은 동영상 (좌측) -->
-    <div style="width: 120px; height: 120px; border-radius: 10px; overflow: hidden; flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.15); border: 1px solid #e6e6e6; background:#000;">
-      <video src="small-video.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-    </div>
+      <!-- 오른쪽: 엄마아빠 편지 + (좌측) 작은 영상 -->
+      <div class="card" style="flex: 1; min-width: 260px; display: flex; align-items: flex-start; gap: 14px;">
+        <!-- 작은 동영상 (좌측) -->
+        <div style="width: 120px; height: 120px; border-radius: 10px; overflow: hidden; flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.15); border: 1px solid #e6e6e6; background:#000;">
+          <video src="small-video.mp4" autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+        </div>
 
-    <!-- 하늘색 세로줄은 blockquote의 border-left로 유지 → 영상 오른쪽에 파란 줄이 서고, 그 오른쪽에 텍스트가 옵니다 -->
-    <div style="flex:1;">
-      <h2>💌 아빠 엄마의 편지</h2>
-      <blockquote class="muted" id="parents-note" style="border-left: 4px solid var(--accent2); padding-left: 12px; margin: 0; font-style: italic;">
-      사랑하는 우리 아가 ❤️<br>
-      너를 만날 날이 하루하루 다가오고 있어.<br>
-      건강하게 태어나 행복하게 자라길 바란다.<br>
-      아빠와 엄마는 언제나 네 편이 되어 줄 거야.<br>
-      세상에 온 걸 진심으로 환영해 💕
-      </blockquote>
-    </div>
-  </div>
-</section>
+        <!-- 편지 텍스트 -->
+        <div style="flex:1;">
+          <h2>💌 아빠 엄마의 편지</h2>
+          <blockquote class="muted" id="parents-note" style="border-left: 4px solid var(--accent2); padding-left: 12px; margin: 0; font-style: italic;">
+            사랑하는 우리 아가 ❤️<br>
+            너를 만날 날이 하루하루 다가오고 있어.<br>
+            건강하게 태어나 행복하게 자라길 바란다.<br>
+            아빠와 엄마는 언제나 네 편이 되어 줄 거야.<br>
+            세상에 온 걸 진심으로 환영해 💕
+          </blockquote>
+        </div>
+      </div>
+    </section>
 
     <div style="height: 18px"></div>
 
     <section class="card">
       <h2>📸 갤러리</h2>
       <div class="gallery" id="gallery"></div>
-    </section>
     </section>
 
     <div style="height: 18px"></div>
@@ -161,7 +206,6 @@
         <source src="baby-video.mp4" type="video/mp4" />
         동영상을 지원하지 않는 브라우저입니다.
       </video>
-      
     </section>
 
     <div style="height: 18px"></div>
@@ -218,7 +262,6 @@
       if(badge){ badge.innerHTML = `📅 <span class="pill">${label}</span>`; }
     }
     updateDday();
-    // 자정 변화 대비하여 주기적으로 갱신 (1분 간격)
     setInterval(updateDday, 60*1000);
 
     const VISIT_KEY = 'baby-visit-count';
